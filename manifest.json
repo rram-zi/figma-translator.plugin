@@ -1,0 +1,8 @@
+{
+  "name": "한↔영 번역기 (무료)",
+  "id": "moin-translator-free",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"]
+}
