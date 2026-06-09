@@ -168,29 +168,28 @@
   let selCnt = 0;
   let busy = false;
 
-  // ── 사용량 추적 (localStorage, 날짜별 키)
-  function todayKey() {
-    return 'mymemory_' + new Date().toISOString().slice(0, 10);
-  }
-  function getUsage() {
-    return parseInt(localStorage.getItem(todayKey()) || '0', 10);
-  }
-  function addUsage(n) {
-    localStorage.setItem(todayKey(), getUsage() + n);
-    updateUsageUI();
+  // ── 사용량 추적 (figma.clientStorage 경유, 메시지 패싱)
+  let todayUsage = 0;
+
+  function todayDate() {
+    return new Date().toISOString().slice(0, 10);
   }
   function getLimit() {
     return document.getElementById('email').value.trim() ? 50000 : 5000;
   }
+  function addUsage(n) {
+    todayUsage += n;
+    parent.postMessage({ pluginMessage: { type: 'set_usage', date: todayDate(), count: todayUsage }}, '*');
+    updateUsageUI();
+  }
   function updateUsageUI() {
-    const usage = getUsage();
     const limit = getLimit();
-    const pct = Math.min((usage / limit) * 100, 100);
+    const pct = Math.min((todayUsage / limit) * 100, 100);
     const isWarn = pct >= 80;
-    const isOver = usage >= limit;
+    const isOver = todayUsage >= limit;
     const countEl = document.getElementById('usageCount');
     const fillEl  = document.getElementById('usageFill');
-    countEl.textContent = usage.toLocaleString() + ' / ' + limit.toLocaleString() + '자';
+    countEl.textContent = todayUsage.toLocaleString() + ' / ' + limit.toLocaleString() + '자';
     countEl.className = 'usage-count' + (isOver ? ' over' : isWarn ? ' warn' : '');
     fillEl.style.width = pct + '%';
     fillEl.className = 'usage-fill' + (isOver ? ' over' : isWarn ? ' warn' : '');
@@ -235,6 +234,11 @@
         info.innerHTML = `<strong>${msg.count}개</strong> 선택됨<br>${names}`;
       }
       checkBtn();
+    }
+
+    if (msg.type === 'usage_data') {
+      todayUsage = msg.count;
+      updateUsageUI();
     }
 
     if (msg.type === 'error') {
@@ -372,7 +376,7 @@
   }
 
   // 초기화
-  updateUsageUI();
+  parent.postMessage({ pluginMessage: { type: 'get_usage', date: todayDate() }}, '*');
   parent.postMessage({ pluginMessage: { type: 'init' }}, '*');
 </script>
 </body>

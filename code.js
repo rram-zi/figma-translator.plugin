@@ -25,6 +25,17 @@ figma.ui.onmessage = async (msg) => {
     return;
   }
 
+  if (msg.type === 'get_usage') {
+    const count = (await figma.clientStorage.getAsync('usage_' + msg.date)) || 0;
+    figma.ui.postMessage({ type: 'usage_data', count });
+    return;
+  }
+
+  if (msg.type === 'set_usage') {
+    await figma.clientStorage.setAsync('usage_' + msg.date, msg.count);
+    return;
+  }
+
   if (msg.type === 'translate') {
     const selection = figma.currentPage.selection;
 
