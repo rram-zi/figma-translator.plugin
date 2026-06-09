@@ -7,66 +7,82 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 13px; color: #1d1d1f; background: #fff;
-    padding: 16px; display: flex; flex-direction: column; gap: 14px;
-  }
-  .label {
-    font-size: 11px; font-weight: 600; color: #6b6b70;
-    text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 5px;
   }
 
-  /* 이메일 입력 */
+  .page { display: none; padding: 20px 16px; flex-direction: column; gap: 14px; min-height: 460px; }
+  .page.active { display: flex; }
+
+  .label { font-size: 11px; font-weight: 600; color: #6b6b70; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 5px; }
+
+  /* ── Setup page ── */
+  .setup-title { font-size: 17px; font-weight: 700; }
+  .setup-sub   { font-size: 13px; color: #6b6b70; margin-top: 3px; }
+
+  .option-card {
+    border: 1.5px solid #e6e6e9; border-radius: 12px; padding: 14px 16px;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .option-card:hover { border-color: #1d1d1f; background: #fafafa; }
+  .option-title { font-size: 14px; font-weight: 600; }
+  .option-sub   { font-size: 12px; color: #6b6b70; margin-top: 3px; }
+  .option-badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+  .badge-email  { background: #e8f4ff; color: #0055cc; }
+  .badge-anon   { background: #f4f4f6; color: #6b6b70; }
+
+  /* ── Email page ── */
+  .back-btn { background: none; border: none; cursor: pointer; font-size: 13px; color: #0066cc; padding: 0; text-align: left; }
+  .page-title { font-size: 15px; font-weight: 700; }
+  .page-sub   { font-size: 12px; color: #6b6b70; line-height: 1.6; margin-top: 5px; }
+
   input[type="email"] {
-    width: 100%; padding: 9px 12px;
-    border: 1px solid #d2d2d7; border-radius: 8px;
+    width: 100%; padding: 10px 12px;
+    border: 1.5px solid #d2d2d7; border-radius: 8px;
     font-size: 13px; outline: none; transition: border-color 0.15s;
   }
   input[type="email"]:focus { border-color: #1d1d1f; }
   input[type="email"]::placeholder { color: #aeaeb2; }
 
-  .hint {
-    font-size: 11px; color: #aeaeb2; line-height: 1.5; margin-top: 4px;
-  }
-  .hint a { color: #0066cc; text-decoration: none; }
+  /* ── Usage ── */
+  .usage-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .usage-count { font-size: 12px; font-weight: 600; }
+  .usage-count.warn { color: #ff9500; }
+  .usage-count.over { color: #cc0000; }
+  .usage-bg   { height: 4px; background: #e6e6e9; border-radius: 2px; overflow: hidden; }
+  .usage-fill { height: 100%; background: #34c759; border-radius: 2px; width: 0; transition: width 0.3s, background 0.3s; }
+  .usage-fill.warn { background: #ff9500; }
+  .usage-fill.over { background: #cc0000; }
 
-  /* 방향 토글 */
-  .dir-wrap {
-    display: flex; background: #f4f4f6;
-    border-radius: 10px; padding: 3px; gap: 2px;
-  }
-  .dir-btn {
+  /* ── Direction ── */
+  .dir-wrap { display: flex; background: #f4f4f6; border-radius: 10px; padding: 3px; gap: 2px; }
+  .dir-btn  {
     flex: 1; padding: 9px 4px; border: none; border-radius: 8px;
-    cursor: pointer; font-size: 13px; font-weight: 500;
+    cursor: pointer; font-size: 13px; font-weight: 600;
     background: transparent; color: #8a8a8f;
-    transition: all 0.15s; text-align: center; line-height: 1.3;
+    transition: all 0.15s; text-align: center;
   }
-  .dir-btn.active {
-    background: #fff; color: #1d1d1f;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-  }
+  .dir-btn.active { background: #fff; color: #1d1d1f; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
 
-  /* 선택 상태 */
-  .sel-box {
-    background: #f4f4f6; border-radius: 8px;
-    padding: 10px 12px; display: flex; align-items: center;
-    gap: 8px; min-height: 44px;
-  }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: #d2d2d7; flex-shrink: 0; }
-  .dot.on { background: #34c759; }
-  .sel-info { color: #6b6b70; line-height: 1.4; font-size: 12px; }
+  /* ── Selection ── */
+  .sel-box { background: #f4f4f6; border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; min-height: 44px; }
+  .dot     { width: 8px; height: 8px; border-radius: 50%; background: #d2d2d7; flex-shrink: 0; }
+  .dot.on  { background: #34c759; }
+  .sel-info { color: #6b6b70; line-height: 1.4; font-size: 12px; flex: 1; }
   .sel-info strong { color: #1d1d1f; font-size: 13px; }
+  .sel-chars { font-size: 12px; font-weight: 600; color: #1d1d1f; white-space: nowrap; }
 
-  /* 진행바 */
-  .prog-wrap { height: 4px; background: #e6e6e9; border-radius: 2px; overflow: hidden; display: none; }
-  .prog-wrap.show { display: block; }
-  .prog-bar { height: 100%; background: #1d1d1f; border-radius: 2px; width: 0; transition: width 0.3s; }
+  /* ── Progress ── */
+  .prog-wrap       { height: 4px; background: #e6e6e9; border-radius: 2px; overflow: hidden; display: none; }
+  .prog-wrap.show  { display: block; }
+  .prog-bar        { height: 100%; background: #1d1d1f; border-radius: 2px; width: 0; transition: width 0.3s; }
 
-  /* 상태 박스 */
-  .status { border-radius: 8px; padding: 10px 12px; font-size: 12px; line-height: 1.5; display: none; }
+  /* ── Status ── */
+  .status       { border-radius: 8px; padding: 10px 12px; font-size: 12px; line-height: 1.5; display: none; }
   .status.info  { background: #e8f4ff; color: #0055cc; display: block; }
   .status.error { background: #fff0f0; color: #cc0000; display: block; }
   .status.ok    { background: #edfaf1; color: #1a8a3a; display: block; }
 
-  /* 번역 버튼 */
+  /* ── Buttons ── */
   .go-btn {
     width: 100%; padding: 13px; background: #1d1d1f; color: #fff;
     border: none; border-radius: 12px; font-size: 15px; font-weight: 600;
@@ -77,168 +93,264 @@
   .go-btn:active:not(:disabled) { transform: scale(0.98); }
   .go-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
-  .spin {
-    width: 16px; height: 16px;
-    border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
-    border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
+  .confirm-btn {
+    width: 100%; padding: 12px; background: #1d1d1f; color: #fff;
+    border: none; border-radius: 12px; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.15s;
   }
+  .confirm-btn:hover:not(:disabled) { opacity: 0.85; }
+  .confirm-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .spin { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading .spin { display: block; }
   .loading .lbl  { display: none; }
 
-  /* 무료 배지 */
-  .free-badge {
-    display: inline-block; background: #edfaf1; color: #1a8a3a;
-    font-size: 10px; font-weight: 600; padding: 2px 7px;
-    border-radius: 20px; margin-left: 6px; vertical-align: middle;
-  }
-
-  /* 사용량 */
-  .usage-row {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 11px; margin-bottom: 5px;
-  }
-  .usage-label { color: #6b6b70; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-  .usage-count { color: #1d1d1f; font-weight: 600; }
-  .usage-count.warn { color: #ff9500; }
-  .usage-count.over { color: #cc0000; }
-  .usage-bg { height: 4px; background: #e6e6e9; border-radius: 2px; overflow: hidden; }
-  .usage-fill { height: 100%; background: #34c759; border-radius: 2px; transition: width 0.3s, background 0.3s; }
-  .usage-fill.warn { background: #ff9500; }
-  .usage-fill.over { background: #cc0000; }
+  /* ── Footer ── */
+  .footer-link { margin-top: auto; text-align: center; }
+  .footer-link a    { font-size: 11px; color: #aeaeb2; text-decoration: none; }
+  .footer-link a:hover { color: #6b6b70; }
+  .reset-btn { background: none; border: none; cursor: pointer; font-size: 11px; color: #aeaeb2; text-decoration: underline; padding: 4px; }
+  .reset-btn:hover { color: #6b6b70; }
 </style>
 </head>
 <body>
 
-<!-- 이메일 -->
-<div>
-  <div class="label">이메일 <span class="free-badge">무료 · 가입 불필요</span></div>
-  <input type="email" id="email" placeholder="your@email.com" autocomplete="off">
-  <div class="hint">
-    이메일은 서버에 저장되지 않아요. 입력 시 하루 50,000자 무료 (미입력 시 5,000자).
+<!-- ── Page 1: Setup ── -->
+<div class="page active" id="page-setup">
+  <div>
+    <div class="setup-title">한↔영 번역기</div>
+    <div class="setup-sub">번역 한도를 선택하세요</div>
+  </div>
+
+  <div class="option-card" onclick="chooseEmail()">
+    <div>
+      <div class="option-title">이메일 입력</div>
+      <div class="option-sub">하루 50,000자까지 번역 가능</div>
+    </div>
+    <span class="option-badge badge-email">50,000자/일</span>
+  </div>
+
+  <div class="option-card" onclick="chooseAnonymous()">
+    <div>
+      <div class="option-title">이메일 없이 시작</div>
+      <div class="option-sub">하루 5,000자까지 번역 가능</div>
+    </div>
+    <span class="option-badge badge-anon">5,000자/일</span>
+  </div>
+
+  <div class="footer-link" style="margin-top:auto;text-align:left">
+    <span style="font-size:11px;color:#aeaeb2;line-height:1.6">
+      MyMemory 무료 번역 API 기반. 이메일은 한도 추적에만 사용되며 저장되지 않습니다.<br>
+      <a href="https://mymemory.translated.net" target="_blank">MyMemory API 정보 →</a>
+    </span>
+  </div>
+</div>
+
+<!-- ── Page 2: Email Input ── -->
+<div class="page" id="page-email">
+  <button class="back-btn" onclick="showPage('page-setup')">← 뒤로</button>
+
+  <div>
+    <div class="page-title">이메일 주소 입력</div>
+    <div class="page-sub">이메일은 MyMemory API의 하루 한도 추적에만 사용되며, 어디에도 저장되지 않습니다.</div>
+  </div>
+
+  <input type="email" id="emailInput" placeholder="your@email.com" autocomplete="off" oninput="checkEmailBtn()">
+
+  <button class="confirm-btn" id="confirmBtn" onclick="confirmEmail()" disabled>확인</button>
+
+  <div class="footer-link">
     <a href="https://mymemory.translated.net" target="_blank">MyMemory API 정보 →</a>
   </div>
 </div>
 
-<!-- 오늘 사용량 -->
-<div>
-  <div class="usage-row">
-    <span class="usage-label">오늘 사용량</span>
-    <span class="usage-count" id="usageCount">0 / 5,000자</span>
+<!-- ── Page 3: Main ── -->
+<div class="page" id="page-main">
+
+  <!-- 사용량 -->
+  <div>
+    <div class="usage-row">
+      <span class="label" style="margin-bottom:0">오늘 사용량</span>
+      <span class="usage-count" id="usageCount">0 / 5,000자</span>
+    </div>
+    <div class="usage-bg"><div class="usage-fill" id="usageFill"></div></div>
   </div>
-  <div class="usage-bg"><div class="usage-fill" id="usageFill" style="width:0%"></div></div>
-</div>
 
-<!-- 방향 -->
-<div>
-  <div class="label">번역 방향</div>
-  <div class="dir-wrap">
-    <button class="dir-btn active" id="d-en2ko" onclick="setDir('en2ko')">
-      🇺🇸 영어<br>→ 한국어
-    </button>
-    <button class="dir-btn" id="d-ko2en" onclick="setDir('ko2en')">
-      🇰🇷 한국어<br>→ 영어
-    </button>
+  <!-- 번역 방향 -->
+  <div>
+    <div class="label">번역 방향</div>
+    <div class="dir-wrap">
+      <button class="dir-btn active" id="d-en2ko" onclick="setDir('en2ko')">EN → KR</button>
+      <button class="dir-btn"        id="d-ko2en" onclick="setDir('ko2en')">KR → EN</button>
+    </div>
+  </div>
+
+  <!-- 선택된 프레임 -->
+  <div>
+    <div class="label">선택된 프레임</div>
+    <div class="sel-box">
+      <div class="dot" id="dot"></div>
+      <div class="sel-info" id="selInfo">프레임을 선택하세요</div>
+      <div class="sel-chars" id="selChars"></div>
+    </div>
+  </div>
+
+  <!-- 진행바 -->
+  <div class="prog-wrap" id="prog"><div class="prog-bar" id="bar"></div></div>
+
+  <!-- 상태 -->
+  <div class="status" id="st"></div>
+
+  <!-- 번역 버튼 -->
+  <button class="go-btn" id="goBtn" onclick="run()" disabled>
+    <div class="spin" id="spin"></div>
+    <span class="lbl">번역 시작</span>
+  </button>
+
+  <!-- 설정 초기화 -->
+  <div style="text-align:center;margin-top:auto">
+    <button class="reset-btn" onclick="resetSetup()">설정 초기화</button>
   </div>
 </div>
-
-<!-- 선택 -->
-<div>
-  <div class="label">선택된 프레임</div>
-  <div class="sel-box">
-    <div class="dot" id="dot"></div>
-    <div class="sel-info" id="selInfo">프레임을 선택하세요</div>
-  </div>
-</div>
-
-<!-- 진행바 -->
-<div class="prog-wrap" id="prog"><div class="prog-bar" id="bar"></div></div>
-
-<!-- 상태 -->
-<div class="status" id="st"></div>
-
-<!-- 버튼 -->
-<button class="go-btn" id="goBtn" onclick="run()" disabled>
-  <div class="spin" id="spin"></div>
-  <span class="lbl">번역 시작</span>
-</button>
 
 <script>
-  let dir = 'en2ko';
-  let selCnt = 0;
-  let busy = false;
+  let todayUsage   = 0;
+  let selCnt       = 0;
+  let selCharCount = 0;
+  let selNames     = [];
+  let busy         = false;
+  let dir          = 'en2ko';
+  let setupMode    = null;
+  let userEmail    = '';
 
-  // ── 사용량 추적 (figma.clientStorage 경유, 메시지 패싱)
-  let todayUsage = 0;
+  function todayDate() { return new Date().toISOString().slice(0, 10); }
+  function getLimit()  { return setupMode === 'email' ? 50000 : 5000; }
 
-  function todayDate() {
-    return new Date().toISOString().slice(0, 10);
+  // ── Pages
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
   }
-  function getLimit() {
-    return document.getElementById('email').value.trim() ? 50000 : 5000;
-  }
-  function addUsage(n) {
-    todayUsage += n;
-    parent.postMessage({ pluginMessage: { type: 'set_usage', date: todayDate(), count: todayUsage }}, '*');
+
+  function enterMain() {
+    showPage('page-main');
     updateUsageUI();
-  }
-  function updateUsageUI() {
-    const limit = getLimit();
-    const pct = Math.min((todayUsage / limit) * 100, 100);
-    const isWarn = pct >= 80;
-    const isOver = todayUsage >= limit;
-    const countEl = document.getElementById('usageCount');
-    const fillEl  = document.getElementById('usageFill');
-    countEl.textContent = todayUsage.toLocaleString() + ' / ' + limit.toLocaleString() + '자';
-    countEl.className = 'usage-count' + (isOver ? ' over' : isWarn ? ' warn' : '');
-    fillEl.style.width = pct + '%';
-    fillEl.className = 'usage-fill' + (isOver ? ' over' : isWarn ? ' warn' : '');
+    updateSelUI();
+    parent.postMessage({ pluginMessage: { type: 'get_usage', date: todayDate() }}, '*');
+    parent.postMessage({ pluginMessage: { type: 'init' }}, '*');
   }
 
+  // ── Setup
+  function chooseEmail() { showPage('page-email'); }
+
+  function chooseAnonymous() {
+    setupMode = 'anonymous';
+    userEmail = '';
+    parent.postMessage({ pluginMessage: { type: 'set_setup', mode: 'anonymous', email: '' }}, '*');
+    enterMain();
+  }
+
+  function checkEmailBtn() {
+    document.getElementById('confirmBtn').disabled = !document.getElementById('emailInput').value.trim();
+  }
+
+  function confirmEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    if (!email) return;
+    setupMode = 'email';
+    userEmail = email;
+    parent.postMessage({ pluginMessage: { type: 'set_setup', mode: 'email', email }}, '*');
+    enterMain();
+  }
+
+  function resetSetup() {
+    parent.postMessage({ pluginMessage: { type: 'reset_setup' }}, '*');
+    todayUsage = 0;
+    showPage('page-setup');
+  }
+
+  // ── Direction
   function setDir(d) {
     dir = d;
     document.getElementById('d-en2ko').classList.toggle('active', d === 'en2ko');
     document.getElementById('d-ko2en').classList.toggle('active', d === 'ko2en');
   }
 
+  // ── Usage UI
+  function updateUsageUI() {
+    const limit  = getLimit();
+    const pct    = Math.min((todayUsage / limit) * 100, 100);
+    const isWarn = pct >= 80;
+    const isOver = todayUsage >= limit;
+    const countEl = document.getElementById('usageCount');
+    const fillEl  = document.getElementById('usageFill');
+    countEl.textContent = todayUsage.toLocaleString() + ' / ' + limit.toLocaleString() + '자';
+    countEl.className   = 'usage-count' + (isOver ? ' over' : isWarn ? ' warn' : '');
+    fillEl.style.width  = pct + '%';
+    fillEl.className    = 'usage-fill' + (isOver ? ' over' : isWarn ? ' warn' : '');
+  }
+
+  function addUsage(n) {
+    todayUsage += n;
+    parent.postMessage({ pluginMessage: { type: 'set_usage', date: todayDate(), count: todayUsage }}, '*');
+    updateUsageUI();
+  }
+
+  // ── Selection UI
+  function updateSelUI() {
+    const dot   = document.getElementById('dot');
+    const info  = document.getElementById('selInfo');
+    const chars = document.getElementById('selChars');
+    if (selCnt === 0) {
+      dot.classList.remove('on');
+      info.innerHTML  = '프레임을 선택하세요';
+      chars.textContent = '';
+    } else {
+      dot.classList.add('on');
+      const names = selNames.join(', ') + (selCnt > 3 ? ' 외…' : '');
+      info.innerHTML = `<strong>${selCnt}개</strong> 선택됨<br><span style="color:#aeaeb2;font-size:11px">${names}</span>`;
+      chars.textContent = selCharCount > 0 ? selCharCount.toLocaleString() + '자' : '';
+    }
+    checkBtn();
+  }
+
   function checkBtn() {
     document.getElementById('goBtn').disabled = selCnt === 0 || busy;
   }
 
-  document.getElementById('email').addEventListener('input', updateUsageUI);
-
+  // ── Run
   function run() {
     if (busy || selCnt === 0) return;
-    parent.postMessage({ pluginMessage: {
-      type: 'translate',
-      direction: dir,
-      email: document.getElementById('email').value.trim(),
-    }}, '*');
+    parent.postMessage({ pluginMessage: { type: 'translate', direction: dir, email: userEmail }}, '*');
   }
 
-  // ── Figma → UI
+  // ── Messages from code.js
   window.onmessage = async (e) => {
     const msg = e.data.pluginMessage;
     if (!msg) return;
 
-    if (msg.type === 'selection') {
-      selCnt = msg.count;
-      const dot = document.getElementById('dot');
-      const info = document.getElementById('selInfo');
-      if (msg.count === 0) {
-        dot.classList.remove('on');
-        info.innerHTML = '프레임을 선택하세요';
+    if (msg.type === 'setup_data') {
+      if (msg.mode) {
+        setupMode = msg.mode;
+        userEmail = msg.email || '';
+        enterMain();
       } else {
-        dot.classList.add('on');
-        const names = msg.names.join(', ') + (msg.count > 3 ? ' 외…' : '');
-        info.innerHTML = `<strong>${msg.count}개</strong> 선택됨<br>${names}`;
+        showPage('page-setup');
       }
-      checkBtn();
+      return;
     }
 
     if (msg.type === 'usage_data') {
       todayUsage = msg.count;
       updateUsageUI();
+    }
+
+    if (msg.type === 'selection') {
+      selCnt       = msg.count;
+      selCharCount = msg.charCount || 0;
+      selNames     = msg.names || [];
+      updateSelUI();
     }
 
     if (msg.type === 'error') {
@@ -262,22 +374,20 @@
       setLoading(false);
       setProgress(0);
       document.getElementById('prog').classList.remove('show');
-      showSt('ok', `✅ 완료! ${msg.applied}개 번역됨` + (msg.failed ? ` (${msg.failed}개 실패)` : ''));
+      showSt('ok', `완료! ${msg.applied}개 번역됨` + (msg.failed ? ` (${msg.failed}개 실패)` : ''));
     }
   };
 
-  // ── MyMemory API: 1개씩 순차 번역 (rate limit 고려)
+  // ── Translation
   async function translateAll(nodes, direction, email) {
     const [src, tgt] = direction === 'en2ko' ? ['en', 'ko'] : ['ko', 'en'];
-    const results = [];
-    const total = nodes.length;
-    const limit = email ? 50000 : 5000;
-
-    // 번역 전 총 글자수 확인
+    const results    = [];
+    const total      = nodes.length;
+    const limit      = email ? 50000 : 5000;
     const totalChars = nodes.reduce((s, n) => s + n.text.length, 0);
-    const usageBefore = todayUsage;
-    if (usageBefore + totalChars > limit) {
-      const remaining = Math.max(limit - usageBefore, 0);
+
+    if (todayUsage + totalChars > limit) {
+      const remaining = Math.max(limit - todayUsage, 0);
       throw new Error(`오늘 남은 글자: ${remaining.toLocaleString()}자. 요청 글자: ${totalChars.toLocaleString()}자 (한도 초과)`);
     }
 
@@ -285,59 +395,45 @@
       const node = nodes[i];
       setProgress(Math.round((i / total) * 95));
       showSt('info', `번역 중… ${i + 1} / ${total}`);
-
       const translated = await translateText(node.text, src, tgt, email);
       results.push({ id: node.id, translated });
       addUsage(node.text.length);
-
       if (i < total - 1) await sleep(150);
     }
     return results;
   }
 
   async function translateText(text, src, tgt, email) {
-    // MyMemory는 500byte 단위 제한 → 긴 텍스트는 문장 단위로 분할
     if (encodeURIComponent(text).length <= 500) {
       return await callMyMemory(text, src, tgt, email);
     }
-
-    // 500byte 초과: 줄바꿈이나 마침표로 분할
     const chunks = splitText(text, 400);
-    const parts = [];
+    const parts  = [];
     for (const chunk of chunks) {
-      const t = await callMyMemory(chunk, src, tgt, email);
-      parts.push(t);
+      parts.push(await callMyMemory(chunk, src, tgt, email));
       await sleep(100);
     }
     return parts.join(' ');
   }
 
   async function callMyMemory(text, src, tgt, email) {
-    const params = new URLSearchParams({
-      q: text,
-      langpair: `${src}|${tgt}`,
-    });
+    const params = new URLSearchParams({ q: text, langpair: `${src}|${tgt}` });
     if (email) params.set('de', email);
-
-    const res = await fetch(`https://api.mymemory.translated.net/get?${params}`);
+    const res  = await fetch(`https://api.mymemory.translated.net/get?${params}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
     const data = await res.json();
     if (data.responseStatus !== 200) {
-      // 할당량 초과 등
       if (String(data.responseStatus) === '429' || data.responseDetails?.includes('LIMIT')) {
         throw new Error('일일 번역 한도 초과. 내일 다시 시도하거나 이메일을 입력하면 한도가 늘어납니다.');
       }
-      // 번역 실패 시 원문 반환
       return text;
     }
     return data.responseData.translatedText || text;
   }
 
   function splitText(text, maxBytes) {
-    const chunks = [];
-    let current = '';
-    // 마침표, 줄바꿈, 쉼표로 분할 시도
+    const chunks    = [];
+    let current     = '';
     const sentences = text.split(/(?<=[.!?\n,])\s*/);
     for (const s of sentences) {
       const candidate = current ? current + ' ' + s : s;
@@ -364,7 +460,7 @@
 
   function showSt(type, msg) {
     const el = document.getElementById('st');
-    el.className = 'status ' + type;
+    el.className  = 'status ' + type;
     el.textContent = msg;
   }
 
@@ -375,9 +471,8 @@
     else { bar.style.width = '0'; }
   }
 
-  // 초기화
-  parent.postMessage({ pluginMessage: { type: 'get_usage', date: todayDate() }}, '*');
-  parent.postMessage({ pluginMessage: { type: 'init' }}, '*');
+  // 초기화: setup 상태 먼저 확인
+  parent.postMessage({ pluginMessage: { type: 'get_setup' }}, '*');
 </script>
 </body>
 </html>
