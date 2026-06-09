@@ -275,7 +275,7 @@
 
     // 번역 전 총 글자수 확인
     const totalChars = nodes.reduce((s, n) => s + n.text.length, 0);
-    const usageBefore = getUsage();
+    const usageBefore = todayUsage;
     if (usageBefore + totalChars > limit) {
       const remaining = Math.max(limit - usageBefore, 0);
       throw new Error(`오늘 남은 글자: ${remaining.toLocaleString()}자. 요청 글자: ${totalChars.toLocaleString()}자 (한도 초과)`);
