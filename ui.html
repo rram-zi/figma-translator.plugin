@@ -374,31 +374,58 @@
       setLoading(false);
       setProgress(0);
       document.getElementById('prog').classList.remove('show');
-      showSt('ok', `완료! ${msg.applied}개 번역됨` + (msg.failed ? ` (${msg.failed}개 실패)` : ''));
+      const skipNote = lastSkipped > 0 ? ` · ${lastSkipped}개 스킵` : '';
+      showSt('ok', `완료! ${msg.applied}개 번역됨${skipNote}` + (msg.failed ? ` (${msg.failed}개 실패)` : ''));
     }
   };
 
-  // ── Translation
-  async function translateAll(nodes, direction, email) {
-    const [src, tgt] = direction === 'en2ko' ? ['en', 'ko'] : ['ko', 'en'];
-    const results    = [];
-    const total      = nodes.length;
-    const limit      = email ? 50000 : 5000;
-    const totalChars = nodes.reduce((s, n) => s + n.text.length, 0);
+  // ── Language detection
+  function isAlreadyKorean(text) {
+    const korean  = (text.match(/[가-힯ᄀ-ᇿ㄰-㆏]/g) || []).length;
+    const letters = (text.match(/[a-zA-Z가-힯ᄀ-ᇿ㄰-㆏]/g) || []).length;
+    return letters > 0 && korean / letters > 0.5;
+  }
 
+  function isAlreadyEnglish(text) {
+    const korean = (text.match(/[가-힯ᄀ-ᇿ㄰-㆏]/g) || []).length;
+    return korean === 0 && /[a-zA-Z]/.test(text);
+  }
+
+  function needsTranslation(text, direction) {
+    if (!text.trim() || !/[a-zA-Z가-힯]/.test(text)) return false;
+    return direction === 'en2ko' ? !isAlreadyKorean(text) : !isAlreadyEnglish(text);
+  }
+
+  // ── Translation
+  let lastSkipped = 0;
+
+  async function translateAll(nodes, direction, email) {
+    const [src, tgt]  = direction === 'en2ko' ? ['en', 'ko'] : ['ko', 'en'];
+    const results     = [];
+    const limit       = email ? 50000 : 5000;
+
+    const toTranslate = nodes.filter(n => needsTranslation(n.text, direction));
+    lastSkipped       = nodes.length - toTranslate.length;
+
+    const totalChars  = toTranslate.reduce((s, n) => s + n.text.length, 0);
     if (todayUsage + totalChars > limit) {
       const remaining = Math.max(limit - todayUsage, 0);
       throw new Error(`오늘 남은 글자: ${remaining.toLocaleString()}자. 요청 글자: ${totalChars.toLocaleString()}자 (한도 초과)`);
     }
 
-    for (let i = 0; i < total; i++) {
-      const node = nodes[i];
-      setProgress(Math.round((i / total) * 95));
-      showSt('info', `번역 중… ${i + 1} / ${total}`);
+    if (toTranslate.length === 0) {
+      throw new Error('선택된 텍스트가 이미 모두 목표 언어입니다.');
+    }
+
+    for (let i = 0; i < toTranslate.length; i++) {
+      const node = toTranslate[i];
+      const skipNote = lastSkipped > 0 ? ` (${lastSkipped}개 스킵)` : '';
+      setProgress(Math.round((i / toTranslate.length) * 95));
+      showSt('info', `번역 중… ${i + 1} / ${toTranslate.length}${skipNote}`);
       const translated = await translateText(node.text, src, tgt, email);
       results.push({ id: node.id, translated });
       addUsage(node.text.length);
-      if (i < total - 1) await sleep(150);
+      if (i < toTranslate.length - 1) await sleep(150);
     }
     return results;
   }
